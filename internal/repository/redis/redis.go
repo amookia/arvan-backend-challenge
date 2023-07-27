@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/amookia/arvan-backend-challenge/internal/config"
-	"github.com/amookia/arvan-backend-challenge/internal/service/repository"
+	"github.com/amookia/arvan-backend-challenge/internal/repository"
 	"github.com/redis/go-redis/v9"
 )
 
