@@ -9,6 +9,7 @@ import (
 
 	"github.com/amookia/arvan-backend-challenge/internal/config"
 	"github.com/amookia/arvan-backend-challenge/internal/repository/redis"
+	"github.com/amookia/arvan-backend-challenge/internal/service/middleware"
 )
 
 func main() {
@@ -19,9 +20,10 @@ func main() {
 
 	ctx := context.Background()
 	redis, _ := redis.New(conf.Redis, ctx, logger)
+	md := middleware.New(conf.Middleware, redis, logger)
 	for {
-		user := redis.UserRemaining("kkkk")
+		i := md.IsUserLimited("user")
+		fmt.Println(i)
 		time.Sleep(1 * time.Second)
-		fmt.Println(user)
 	}
 }

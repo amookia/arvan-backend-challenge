@@ -16,7 +16,6 @@ type redisRepo struct {
 	limiter *redis_rate.Limiter
 	logger  *log.Logger
 	ctx     context.Context
-	rate    int
 }
 
 func New(config config.Redis, ctx context.Context, logs *log.Logger) (repository.Redis, error) {
@@ -24,6 +23,6 @@ func New(config config.Redis, ctx context.Context, logs *log.Logger) (repository
 		Addr: fmt.Sprintf("%s:%s", config.Host, config.Port),
 	})
 	return redisRepo{
-		conn: rdb, limiter: redis_rate.NewLimiter(rdb), logger: logs, rate: 10, ctx: ctx,
+		conn: rdb, limiter: redis_rate.NewLimiter(rdb), logger: logs, ctx: ctx,
 	}, nil
 }
