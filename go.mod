@@ -3,6 +3,7 @@ module github.com/amookia/arvan-backend-challenge
 go 1.20
 
 require (
+	github.com/go-redis/redis_rate/v10 v10.0.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/redis/go-redis/v9 v9.0.5
 	gopkg.in/yaml.v2 v2.4.0
