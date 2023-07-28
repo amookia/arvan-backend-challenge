@@ -15,7 +15,8 @@ type api struct {
 	upload     uploadHandler
 }
 
-func New(logger *log.Logger, mdConfig config.Middleware, mdService service.Middleware) http.Api {
+func New(logger *log.Logger, mdConfig config.Middleware,
+	mdService service.Middleware, upService service.Upload) http.Api {
 	return &api{
 		gin: gin.New(),
 		middleware: middlewareHandler{
@@ -24,6 +25,7 @@ func New(logger *log.Logger, mdConfig config.Middleware, mdService service.Middl
 			logger:     logger,
 		},
 		upload: uploadHandler{
+			upload: upService,
 			logger: logger,
 		},
 	}

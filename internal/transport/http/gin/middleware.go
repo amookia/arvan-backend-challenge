@@ -22,7 +22,7 @@ func (m middlewareHandler) requestLimiter(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
 	}
-	limited := m.middleware.IsUserLimited(form.Username)
+	limited := m.middleware.IsUserLimited(form.Data.Username)
 	if limited {
 		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "request limited"})
 	}

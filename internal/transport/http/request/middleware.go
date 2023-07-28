@@ -2,6 +2,8 @@ package request
 
 type (
 	RequestLimiter struct {
-		Username string `form:"username" binding:"required"`
+		Data struct {
+			Username string `json:"username" binding:"required"`
+		} `form:"data" binding:"required"`
 	}
 )
