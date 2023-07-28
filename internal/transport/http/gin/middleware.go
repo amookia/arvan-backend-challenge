@@ -29,3 +29,16 @@ func (m middlewareHandler) requestLimiter(c *gin.Context) {
 	c.Next()
 
 }
+
+func (m middlewareHandler) monthlyCapLimiter(c *gin.Context) {
+	var form request.MonthlyLimiter
+	err := c.ShouldBind(&form)
+	if err != nil {
+		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
+	}
+	limited := m.middleware.IsUserLimitedCapacity(form.Data.Username, form.File.Size)
+	if limited {
+		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "monthly limited"})
+	}
+	c.Next()
+}

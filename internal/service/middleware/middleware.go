@@ -22,3 +22,11 @@ func (m middle) IsUserLimited(username string) bool {
 	remain := m.redis.UserRemaining(username, m.config.PerMinute)
 	return remain == 0
 }
+
+func (m middle) IsUserLimitedCapacity(username string, size int64) bool {
+	if m.redis.UserMonthlyUsage(username) >= int64(m.config.Monthly) {
+		return true
+	}
+	m.redis.UserMonthlyUsageUpdate(username, size)
+	return false
+}
