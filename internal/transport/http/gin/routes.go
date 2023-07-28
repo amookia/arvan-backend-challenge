@@ -9,8 +9,6 @@ func (a api) routes(c *gin.RouterGroup) {
 
 	object := c.Group("/object", a.middleware.requestLimiter)
 	{
-		object.POST("/put", func(ctx *gin.Context) {
-			ctx.JSON(200, gin.H{"hello": "world"})
-		})
+		object.POST("/put", a.upload.Put)
 	}
 }

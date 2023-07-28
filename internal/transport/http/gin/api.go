@@ -12,6 +12,7 @@ import (
 type api struct {
 	gin        *gin.Engine
 	middleware middlewareHandler
+	upload     uploadHandler
 }
 
 func New(logger *log.Logger, mdConfig config.Middleware, mdService service.Middleware) http.Api {
@@ -21,6 +22,9 @@ func New(logger *log.Logger, mdConfig config.Middleware, mdService service.Middl
 			config:     mdConfig,
 			middleware: mdService,
 			logger:     logger,
+		},
+		upload: uploadHandler{
+			logger: logger,
 		},
 	}
 }
