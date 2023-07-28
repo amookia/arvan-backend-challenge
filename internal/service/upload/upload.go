@@ -1,6 +1,7 @@
 package upload
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/amookia/arvan-backend-challenge/internal/entity/object"
@@ -37,8 +38,10 @@ func (u upload) PutObject(req request.PutObject) error {
 	}
 
 	_, err = u.mongodb.InsertObject(object)
+
 	if err != nil {
-		return err
+		fmt.Println(err)
+		return fmt.Errorf("duplicate object")
 	}
 	return nil
 }

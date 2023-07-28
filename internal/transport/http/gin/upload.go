@@ -22,7 +22,9 @@ func (u uploadHandler) Put(c *gin.Context) {
 	fmt.Println(model)
 	err := u.upload.PutObject(model)
 	if err != nil {
-		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err})
+		fmt.Println(err)
+		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
+		return
 	}
 	c.JSON(200, gin.H{"message": "OK"})
 }

@@ -5,10 +5,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const collectionName = "objects"
+const objectsName = "objects"
 
 func (m mongoRepo) InsertObject(data object.ObjectModel) (primitive.ObjectID, error) {
-	collection := m.db.Collection(collectionName)
+	collection := m.db.Collection(objectsName)
 	res, err := collection.InsertOne(m.context, data)
 	if err != nil {
 		m.logger.Println(err)
