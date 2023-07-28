@@ -5,6 +5,8 @@ import (
 
 	"github.com/amookia/arvan-backend-challenge/internal/config"
 	"github.com/amookia/arvan-backend-challenge/internal/service"
+	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
+	"github.com/amookia/arvan-backend-challenge/internal/transport/http/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,10 +17,14 @@ type middlewareHandler struct {
 }
 
 func (m middlewareHandler) RequestLimiter(c *gin.Context) {
-	user, _ := c.GetPostForm(m.config.UserKey)
-	limited := m.middleware.IsUserLimited(user)
+	var form request.RequestLimiter
+	err := c.ShouldBind(&form)
+	if err != nil {
+		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
+	}
+	limited := m.middleware.IsUserLimited(form.Username)
 	if limited {
-		c.AbortWithStatusJSON(429, gin.H{"error": "request limited"})
+		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "request limited"})
 	}
 	c.Next()
 

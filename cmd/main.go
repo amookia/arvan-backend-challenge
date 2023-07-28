@@ -21,6 +21,6 @@ func main() {
 	redis, _ := redis.New(conf.Redis, context, logger)
 	mdService := middleware.New(conf.Middleware, redis, logger)
 	serv := gin.New(logger, conf.Middleware, mdService)
-	serv.Start(":8082")
+	serv.Start(":8085")
 
 }
