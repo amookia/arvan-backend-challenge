@@ -26,7 +26,7 @@ func New(logger *log.Logger, mdConfig config.Middleware, mdService service.Middl
 }
 
 func (a api) Start(address string) error {
-	routerGroup := a.gin.Group("/api")
-	a.routes(routerGroup)
+	v1RouterGroup := a.gin.Group("/api/v1")
+	a.routes(v1RouterGroup)
 	return a.gin.Run(address)
 }

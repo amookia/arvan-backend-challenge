@@ -16,7 +16,7 @@ type middlewareHandler struct {
 	logger     *log.Logger
 }
 
-func (m middlewareHandler) RequestLimiter(c *gin.Context) {
+func (m middlewareHandler) requestLimiter(c *gin.Context) {
 	var form request.RequestLimiter
 	err := c.ShouldBind(&form)
 	if err != nil {
