@@ -20,8 +20,5 @@ func New(cfg config.Middleware, rd repository.Redis, logger *log.Logger) service
 
 func (m middle) IsUserLimited(username string) bool {
 	remain := m.redis.UserRemaining(username, m.config.PerMinute)
-	if remain == 0 {
-		return true
-	}
-	return false
+	return remain == 0
 }
