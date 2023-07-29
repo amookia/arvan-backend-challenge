@@ -8,6 +8,7 @@ import (
 	"github.com/amookia/arvan-backend-challenge/pkg/checksum"
 	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type upload struct {
@@ -19,14 +20,14 @@ func New(logger logger.Logger, mongodb repository.Mongodb) service.Upload {
 	return upload{logger: logger, mongodb: mongodb}
 }
 
-func (u upload) PutObject(req request.PutObject) error {
+func (u upload) PutObject(req request.PutObject) (primitive.ObjectID, error) {
 	id, err := uuid.Parse(req.Data.Id)
 	if err != nil {
-		return err
+		return primitive.NilObjectID, err
 	}
 	file, err := req.File.Open()
 	if err != nil {
-		return err
+		return primitive.NilObjectID, err
 	}
 	object := object.ObjectModel{
 		CheckSum: checksum.GenerateMd5CheckSum(file),
@@ -35,10 +36,10 @@ func (u upload) PutObject(req request.PutObject) error {
 		Owner:    req.Data.Username,
 	}
 
-	_, err = u.mongodb.InsertObject(object)
+	objectId, err := u.mongodb.InsertObject(object)
 
 	if err != nil {
-		return err
+		return primitive.NilObjectID, err
 	}
-	return nil
+	return objectId, nil
 }

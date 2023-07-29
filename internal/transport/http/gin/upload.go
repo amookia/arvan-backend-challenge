@@ -15,12 +15,12 @@ type uploadHandler struct {
 }
 
 func (u uploadHandler) Put(c *gin.Context) {
-	var model request.PutObject
-	c.BindWith(&model, binding.FormMultipart)
-	err := u.upload.PutObject(model)
+	var form request.PutObject
+	c.BindWith(&form, binding.FormMultipart)
+	objectId, err := u.upload.PutObject(form)
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
 		return
 	}
-	c.JSON(200, gin.H{"message": "OK"})
+	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId.Hex()})
 }
