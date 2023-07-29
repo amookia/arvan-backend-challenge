@@ -17,12 +17,20 @@ type mongoRepo struct {
 }
 
 func New(conn *mongo.Database, logger *log.Logger, ctx context.Context) repository.Mongodb {
-	conn.Collection(objectsName).Indexes().CreateOne(
+	conn.Collection(objectsName).Indexes().CreateMany(
 		context.Background(),
-		mongo.IndexModel{
-			Keys:    bson.D{{Key: "checksum", Value: 1}},
-			Options: options.Index().SetUnique(true),
+		[]mongo.IndexModel{
+			{Keys: bson.D{{Key: "checksum", Value: 1}},
+				Options: options.Index().SetUnique(true)},
+			{Keys: bson.D{{Key: "uuid", Value: 1}},
+				Options: options.Index().SetUnique(true)},
 		},
 	)
 	return mongoRepo{db: conn, logger: logger, context: ctx}
+}
+
+func (m mongoRepo) IsDupKey(err error, key string) bool {
+	doc := err.(mongo.WriteException).WriteErrors[0].Raw.Lookup("keyPattern").
+		Document().Lookup(key).String()
+	return doc != ""
 }

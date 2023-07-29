@@ -3,12 +3,12 @@ package gin
 import "github.com/gin-gonic/gin"
 
 func (a api) routes(c *gin.RouterGroup) {
-	c.POST("/hello", a.middleware.requestLimiter, func(ctx *gin.Context) {
+	c.POST("/hello", a.middleware.requestQuota, func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{"hello": "world"})
 	})
 
-	object := c.Group("/object", a.middleware.requestLimiter)
+	object := c.Group("/object", a.middleware.requestQuota)
 	{
-		object.POST("/put", a.middleware.monthlyCapLimiter, a.upload.Put)
+		object.POST("/put", a.middleware.monthlyQuota, a.upload.Put)
 	}
 }

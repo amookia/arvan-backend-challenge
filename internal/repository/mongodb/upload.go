@@ -1,6 +1,8 @@
 package mongodb
 
 import (
+	"errors"
+
 	"github.com/amookia/arvan-backend-challenge/internal/entity/object"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -11,7 +13,12 @@ func (m mongoRepo) InsertObject(data object.ObjectModel) (primitive.ObjectID, er
 	collection := m.db.Collection(objectsName)
 	res, err := collection.InsertOne(m.context, data)
 	if err != nil {
-		m.logger.Println(err)
+		switch m.IsDupKey(err, "uuid") {
+		case true:
+			return primitive.NilObjectID, errors.New("duplicate uuid")
+		case false:
+			return primitive.NilObjectID, errors.New("duplicate object")
+		}
 		return primitive.NilObjectID, err
 	}
 	id := res.InsertedID.(primitive.ObjectID)

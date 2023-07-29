@@ -1,7 +1,6 @@
 package gin
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/amookia/arvan-backend-challenge/internal/service"
@@ -19,10 +18,8 @@ type uploadHandler struct {
 func (u uploadHandler) Put(c *gin.Context) {
 	var model request.PutObject
 	c.BindWith(&model, binding.FormMultipart)
-	fmt.Println(model)
 	err := u.upload.PutObject(model)
 	if err != nil {
-		fmt.Println(err)
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
 		return
 	}

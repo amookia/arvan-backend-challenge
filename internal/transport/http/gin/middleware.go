@@ -16,13 +16,13 @@ type middlewareHandler struct {
 	logger     *log.Logger
 }
 
-func (m middlewareHandler) requestLimiter(c *gin.Context) {
+func (m middlewareHandler) requestQuota(c *gin.Context) {
 	var form request.RequestLimiter
 	err := c.ShouldBind(&form)
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
 	}
-	limited := m.middleware.IsUserLimited(form.Data.Username)
+	limited := m.middleware.UserQuotaRequest(form.Data.Username)
 	if limited {
 		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "request limited"})
 	}
@@ -30,13 +30,13 @@ func (m middlewareHandler) requestLimiter(c *gin.Context) {
 
 }
 
-func (m middlewareHandler) monthlyCapLimiter(c *gin.Context) {
+func (m middlewareHandler) monthlyQuota(c *gin.Context) {
 	var form request.MonthlyLimiter
 	err := c.ShouldBind(&form)
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
 	}
-	limited := m.middleware.IsUserLimitedCapacity(form.Data.Username, form.File.Size)
+	limited := m.middleware.UserQuotaTraffic(form.Data.Username, form.File.Size)
 	if limited {
 		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "monthly limited"})
 	}

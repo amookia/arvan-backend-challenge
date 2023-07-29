@@ -18,12 +18,12 @@ func New(cfg config.Middleware, rd repository.Redis, logger *log.Logger) service
 	return middle{config: cfg, redis: rd, logger: logger}
 }
 
-func (m middle) IsUserLimited(username string) bool {
+func (m middle) UserQuotaRequest(username string) bool {
 	remain := m.redis.UserRemaining(username, m.config.PerMinute)
 	return remain == 0
 }
 
-func (m middle) IsUserLimitedCapacity(username string, size int64) bool {
+func (m middle) UserQuotaTraffic(username string, size int64) bool {
 	if m.redis.UserMonthlyUsage(username) >= int64(m.config.Monthly) {
 		return true
 	}
