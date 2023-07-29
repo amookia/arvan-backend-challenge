@@ -1,18 +1,17 @@
 package gin
 
 import (
-	"log"
-
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/response"
+	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
 
 type uploadHandler struct {
 	upload service.Upload
-	logger *log.Logger
+	logger logger.Logger
 }
 
 func (u uploadHandler) Put(c *gin.Context) {

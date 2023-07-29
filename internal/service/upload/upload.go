@@ -1,22 +1,21 @@
 package upload
 
 import (
-	"log"
-
 	"github.com/amookia/arvan-backend-challenge/internal/entity/object"
 	"github.com/amookia/arvan-backend-challenge/internal/repository"
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
 	"github.com/amookia/arvan-backend-challenge/pkg/checksum"
+	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/google/uuid"
 )
 
 type upload struct {
 	mongodb repository.Mongodb
-	logger  *log.Logger
+	logger  logger.Logger
 }
 
-func New(logger *log.Logger, mongodb repository.Mongodb) service.Upload {
+func New(logger logger.Logger, mongodb repository.Mongodb) service.Upload {
 	return upload{logger: logger, mongodb: mongodb}
 }
 

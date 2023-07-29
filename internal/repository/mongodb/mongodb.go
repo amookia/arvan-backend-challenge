@@ -2,9 +2,9 @@ package mongodb
 
 import (
 	"context"
-	"log"
 
 	"github.com/amookia/arvan-backend-challenge/internal/repository"
+	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -12,11 +12,11 @@ import (
 
 type mongoRepo struct {
 	db      *mongo.Database
-	logger  *log.Logger
+	logger  logger.Logger
 	context context.Context
 }
 
-func New(conn *mongo.Database, logger *log.Logger, ctx context.Context) repository.Mongodb {
+func New(conn *mongo.Database, logger logger.Logger, ctx context.Context) repository.Mongodb {
 	conn.Collection(objectsName).Indexes().CreateMany(
 		context.Background(),
 		[]mongo.IndexModel{

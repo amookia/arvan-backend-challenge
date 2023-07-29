@@ -1,19 +1,18 @@
 package gin
 
 import (
-	"log"
-
 	"github.com/amookia/arvan-backend-challenge/internal/config"
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/response"
+	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 
 type middlewareHandler struct {
 	config     config.Middleware
 	middleware service.Middleware
-	logger     *log.Logger
+	logger     logger.Logger
 }
 
 func (m middlewareHandler) requestQuota(c *gin.Context) {

@@ -1,11 +1,10 @@
 package gin
 
 import (
-	"log"
-
 	"github.com/amookia/arvan-backend-challenge/internal/config"
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http"
+	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,7 +14,7 @@ type api struct {
 	upload     uploadHandler
 }
 
-func New(logger *log.Logger, mdConfig config.Middleware,
+func New(logger logger.Logger, mdConfig config.Middleware,
 	mdService service.Middleware, upService service.Upload) http.Api {
 	return &api{
 		gin: gin.New(),
