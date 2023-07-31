@@ -10,7 +10,6 @@ import (
 	"github.com/amookia/arvan-backend-challenge/pkg/checksum"
 	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/google/uuid"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type upload struct {
@@ -23,14 +22,14 @@ func New(logger logger.Logger, mongodb repository.Mongodb, redis repository.Redi
 	return upload{logger: logger, redis: redis, mongodb: mongodb}
 }
 
-func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) {
-	id, err := uuid.Parse(req.Data.Id)
+func (u upload) CreateObject(req request.PutObject) (string, error) {
+	id, err := uuid.Parse(req.ObjectId)
 	if err != nil {
-		return primitive.NilObjectID, err
+		return "", err
 	}
 	file, err := req.File.Open()
 	if err != nil {
-		return primitive.NilObjectID, err
+		return "", err
 	}
 	object := object.ObjectModel{
 		CheckSum: checksum.GenerateMd5CheckSum(file),
@@ -39,13 +38,13 @@ func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) 
 		Owner:    req.Username,
 	}
 
-	objectId, err := u.mongodb.InsertObject(object)
+	_, err = u.mongodb.InsertObject(object)
 
 	if err != nil {
-		return primitive.NilObjectID, err
+		return "", err
 	}
 	u.redis.UserMonthlyUsageUpdate(object.Owner, object.Size)
-	return objectId, nil
+	return req.ObjectId, nil
 }
 
 func (u upload) DeleteObject(username string, objectId string) error {

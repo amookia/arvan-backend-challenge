@@ -1,6 +1,8 @@
 package object
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 type (
 	ObjectModel struct {

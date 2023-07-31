@@ -27,7 +27,7 @@ func (u uploadHandler) Create(c *gin.Context) {
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
 		return
 	}
-	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId.Hex()})
+	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId})
 }
 
 func (u uploadHandler) Delete(c *gin.Context) {
