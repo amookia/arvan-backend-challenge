@@ -16,7 +16,12 @@ type uploadHandler struct {
 
 func (u uploadHandler) Put(c *gin.Context) {
 	var form request.PutObject
-	c.BindWith(&form, binding.FormMultipart)
+	err := c.ShouldBindWith(&form, binding.FormMultipart)
+	form.Username = c.GetHeader("username")
+	if err != nil {
+		c.AbortWithStatusJSON(400, response.PutObjectError{Err: "invalid form"})
+		return
+	}
 	objectId, err := u.upload.PutObject(form)
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})

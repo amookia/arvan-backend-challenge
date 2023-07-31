@@ -33,7 +33,7 @@ func (u upload) PutObject(req request.PutObject) (primitive.ObjectID, error) {
 		CheckSum: checksum.GenerateMd5CheckSum(file),
 		Uuid:     id,
 		Size:     req.File.Size,
-		Owner:    req.Data.Username,
+		Owner:    req.Username,
 	}
 
 	objectId, err := u.mongodb.InsertObject(object)
