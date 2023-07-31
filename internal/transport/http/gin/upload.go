@@ -19,7 +19,7 @@ func (u uploadHandler) Create(c *gin.Context) {
 	err := c.ShouldBindWith(&form, binding.FormMultipart)
 	form.Username = c.GetHeader("username")
 	if err != nil {
-		c.AbortWithStatusJSON(400, response.PutObjectError{Err: "invalid form"})
+		c.AbortWithStatusJSON(400, FormErrorHandler(err))
 		return
 	}
 	objectId, err := u.upload.CreateObject(form)
@@ -35,7 +35,7 @@ func (u uploadHandler) Delete(c *gin.Context) {
 	username := c.Request.Header.Get("username")
 	err := u.upload.DeleteObject(username, objectId)
 	if err != nil {
-		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
+		c.AbortWithStatusJSON(400, FormErrorHandler(err))
 		return
 	}
 	c.JSON(200, response.PutObject{Message: "object has been deleted"})
