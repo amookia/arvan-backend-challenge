@@ -7,7 +7,6 @@ import (
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/response"
 	"github.com/amookia/arvan-backend-challenge/pkg/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type middlewareHandler struct {
@@ -34,13 +33,12 @@ func (m middlewareHandler) requestQuota(c *gin.Context) {
 
 func (m middlewareHandler) monthlyQuota(c *gin.Context) {
 	var form request.MonthlyLimiter
-	err := c.ShouldBindWith(&form, binding.FormMultipart)
 	form.Username = c.GetHeader("username")
-	if err != nil {
-		m.logger.Error(err.Error())
+	if form.Username == "" {
 		c.AbortWithStatusJSON(400, response.RequestLimiter{Error: "invalid form"})
+		return
 	}
-	limited := m.middleware.UserQuotaTraffic(form.Username, form.File.Size)
+	limited := m.middleware.UserQuotaTraffic(form.Username)
 	if limited {
 		c.AbortWithStatusJSON(429, response.RequestLimiter{Error: "monthly limited"})
 	}

@@ -1,7 +1,5 @@
 package request
 
-import "mime/multipart"
-
 type (
 	RequestLimiter struct {
 		Username string `header:"username"`
@@ -11,7 +9,7 @@ type (
 	}
 
 	MonthlyLimiter struct {
-		File     *multipart.FileHeader `form:"file" binding:"required"`
+		//File     *multipart.FileHeader `form:"file" binding:"required"`
 		Username string
 
 		// Data struct {
