@@ -9,6 +9,6 @@ type (
 		Username string
 	}
 	Data struct {
-		Id string `json:"id" binding:"required,uuid"`
+		Id string `json:"id" binding:"required"`
 	}
 )
