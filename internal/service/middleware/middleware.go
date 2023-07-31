@@ -22,6 +22,6 @@ func (m middle) UserQuotaRequest(username string) bool {
 	return remain == 0
 }
 
-func (m middle) UserQuotaTraffic(username string, size int64) bool {
+func (m middle) UserQuotaTraffic(username string) bool {
 	return m.redis.UserMonthlyUsage(username) >= int64(m.config.Monthly)
 }
