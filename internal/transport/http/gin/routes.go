@@ -10,6 +10,6 @@ func (a api) routes(c *gin.RouterGroup) {
 	object := c.Group("/object", a.middleware.requestQuota)
 	{
 		object.POST("/create", a.middleware.monthlyQuota, a.upload.Create)
-		object.DELETE("/delete/:objectId", a.middleware.monthlyQuota)
+		object.DELETE("/delete/:objectId", a.middleware.monthlyQuota, a.upload.Delete)
 	}
 }

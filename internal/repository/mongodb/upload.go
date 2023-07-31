@@ -2,10 +2,11 @@ package mongodb
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/amookia/arvan-backend-challenge/internal/entity/object"
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -29,7 +30,8 @@ func (m mongoRepo) InsertObject(data object.ObjectModel) (primitive.ObjectID, er
 
 func (m mongoRepo) DeleteObjectByObjectIdUser(username string, objectId uuid.UUID) (bool, error) {
 	collection := m.db.Collection(objectsName)
-	res, err := collection.DeleteOne(m.context, gin.H{"username": username, "uuid": objectId})
+	fmt.Println(username, objectId)
+	res, err := collection.DeleteOne(m.context, bson.M{"owner": username, "uuid": objectId})
 	if err != nil {
 		return false, err
 	}
