@@ -7,4 +7,5 @@ import (
 
 type Upload interface {
 	CreateObject(request.PutObject) (primitive.ObjectID, error)
+	DeleteObject(string, string) error
 }

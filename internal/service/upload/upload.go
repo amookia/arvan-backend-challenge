@@ -1,6 +1,8 @@
 package upload
 
 import (
+	"errors"
+
 	"github.com/amookia/arvan-backend-challenge/internal/entity/object"
 	"github.com/amookia/arvan-backend-challenge/internal/repository"
 	"github.com/amookia/arvan-backend-challenge/internal/service"
@@ -42,4 +44,19 @@ func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) 
 		return primitive.NilObjectID, err
 	}
 	return objectId, nil
+}
+
+func (u upload) DeleteObject(username string, objectId string) error {
+	id, err := uuid.Parse(objectId)
+	if err != nil {
+		return err
+	}
+	deleted, err := u.mongodb.DeleteObjectByObjectIdUser(username, id)
+	if err != nil {
+		return err
+	}
+	if !deleted {
+		return errors.New("object does not exist")
+	}
+	return nil
 }

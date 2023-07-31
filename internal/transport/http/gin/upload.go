@@ -29,3 +29,14 @@ func (u uploadHandler) Create(c *gin.Context) {
 	}
 	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId.Hex()})
 }
+
+func (u uploadHandler) Delete(c *gin.Context) {
+	objectId := c.Param("objectId")
+	username := c.Request.Header.Get("username")
+	err := u.upload.DeleteObject(username, objectId)
+	if err != nil {
+		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
+		return
+	}
+	c.JSON(200, response.PutObject{Message: "object has been deleted"})
+}
