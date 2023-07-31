@@ -36,7 +36,7 @@ func main() {
 	mongodbRepo := m.New(mongo, logger, context)
 
 	mdService := middleware.New(conf.Middleware, redisRepo, logger)
-	upService := upload.New(logger, mongodbRepo)
+	upService := upload.New(logger, mongodbRepo, redisRepo)
 	serv := gin.New(logger, conf.Middleware, mdService, upService)
 	serv.Start(":8080")
 

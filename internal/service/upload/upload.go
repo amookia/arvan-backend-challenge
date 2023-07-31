@@ -15,11 +15,12 @@ import (
 
 type upload struct {
 	mongodb repository.Mongodb
+	redis   repository.Redis
 	logger  logger.Logger
 }
 
-func New(logger logger.Logger, mongodb repository.Mongodb) service.Upload {
-	return upload{logger: logger, mongodb: mongodb}
+func New(logger logger.Logger, mongodb repository.Mongodb, redis repository.Redis) service.Upload {
+	return upload{logger: logger, redis: redis, mongodb: mongodb}
 }
 
 func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) {
@@ -43,6 +44,7 @@ func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) 
 	if err != nil {
 		return primitive.NilObjectID, err
 	}
+	u.redis.UserMonthlyUsageUpdate(object.Owner, object.Size)
 	return objectId, nil
 }
 

@@ -23,9 +23,5 @@ func (m middle) UserQuotaRequest(username string) bool {
 }
 
 func (m middle) UserQuotaTraffic(username string, size int64) bool {
-	if m.redis.UserMonthlyUsage(username) >= int64(m.config.Monthly) {
-		return true
-	}
-	m.redis.UserMonthlyUsageUpdate(username, size)
-	return false
+	return m.redis.UserMonthlyUsage(username) >= int64(m.config.Monthly)
 }

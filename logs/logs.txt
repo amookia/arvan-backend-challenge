@@ -1,2 +1,4 @@
 {"level":"ERROR","ts":"2023-07-31T11:54:26.541+0330","msg":"request Content-Type isn't multipart/form-data"}
 {"level":"ERROR","ts":"2023-07-31T11:55:13.559+0330","msg":"request Content-Type isn't multipart/form-data"}
+{"level":"ERROR","ts":"2023-07-31T12:14:11.464+0330","msg":"request Content-Type isn't multipart/form-data"}
+{"level":"ERROR","ts":"2023-07-31T12:14:33.102+0330","msg":"request Content-Type isn't multipart/form-data"}
