@@ -20,7 +20,7 @@ func New(logger logger.Logger, mongodb repository.Mongodb) service.Upload {
 	return upload{logger: logger, mongodb: mongodb}
 }
 
-func (u upload) PutObject(req request.PutObject) (primitive.ObjectID, error) {
+func (u upload) CreateObject(req request.PutObject) (primitive.ObjectID, error) {
 	id, err := uuid.Parse(req.Data.Id)
 	if err != nil {
 		return primitive.NilObjectID, err

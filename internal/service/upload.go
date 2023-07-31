@@ -6,5 +6,5 @@ import (
 )
 
 type Upload interface {
-	PutObject(request.PutObject) (primitive.ObjectID, error)
+	CreateObject(request.PutObject) (primitive.ObjectID, error)
 }

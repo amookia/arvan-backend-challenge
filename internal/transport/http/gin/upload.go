@@ -14,7 +14,7 @@ type uploadHandler struct {
 	logger logger.Logger
 }
 
-func (u uploadHandler) Put(c *gin.Context) {
+func (u uploadHandler) Create(c *gin.Context) {
 	var form request.PutObject
 	err := c.ShouldBindWith(&form, binding.FormMultipart)
 	form.Username = c.GetHeader("username")
@@ -22,7 +22,7 @@ func (u uploadHandler) Put(c *gin.Context) {
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: "invalid form"})
 		return
 	}
-	objectId, err := u.upload.PutObject(form)
+	objectId, err := u.upload.CreateObject(form)
 	if err != nil {
 		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
 		return
