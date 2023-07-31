@@ -1,13 +1,15 @@
 package redis
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/go-redis/redis_rate/v10"
 )
 
 func (r redisRepo) UserRemaining(username string, rate int) int {
-	res, err := r.limiter.Allow(r.ctx, username, redis_rate.PerMinute(rate))
+	key := fmt.Sprintf("%s:request", username)
+	res, err := r.limiter.Allow(r.ctx, key, redis_rate.PerMinute(rate))
 	if err != nil {
 		r.logger.Error(err.Error())
 	}
