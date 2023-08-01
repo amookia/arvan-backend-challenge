@@ -35,7 +35,8 @@ func (u uploadHandler) Delete(c *gin.Context) {
 	username := c.Request.Header.Get("username")
 	err := u.upload.DeleteObject(username, objectId)
 	if err != nil {
-		c.AbortWithStatusJSON(400, FormErrorHandler(err))
+		c.AbortWithStatusJSON(404, response.Error{Errors: []string{err.Error()},
+		Message: "failed to delete object"})
 		return
 	}
 	c.JSON(200, response.PutObject{Message: "object has been deleted"})
