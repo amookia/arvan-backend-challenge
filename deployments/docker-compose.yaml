@@ -1,0 +1,108 @@
+version: "3.8"
+
+services:
+  redis:
+    container_name: redis_service
+    image: redis:latest
+    expose:
+      - 6379
+    networks:
+      - challenge-network
+  
+  mongo:
+    container_name: mongodb_service
+    image: mongo:latest
+    expose:
+      - 27017
+    networks:
+      - challenge-network
+  
+  nginx:
+    container_name: nginx_service
+    image: nginx:1.25.1-alpine
+    ports:
+      - "80:80"
+    networks:
+      - challenge-network
+    volumes:
+      - ./nginx_service/conf.d:/etc/nginx
+  
+  api-service1:
+    container_name: api_service1
+    build:
+      context: ../
+      dockerfile: deployments/challenge_service/Dockerfile
+    expose:
+      - 8001
+    networks:
+      - challenge-network
+    environment:
+      #- GIN_MODE=release
+      - REDIS_HOST=redis_service
+      - REDIS_PORT=6379
+      - MONGO_HOST=mongodb_service
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=objectservice
+      - SERVICE_PORT=8001
+  
+  api-service2:
+    container_name: api_service2
+    build:
+      context: ../
+      dockerfile: deployments/challenge_service/Dockerfile
+    expose:
+      - 8002
+    networks:
+      - challenge-network
+    environment:
+      #- GIN_MODE=release
+      - REDIS_HOST=redis_service
+      - REDIS_PORT=6379
+      - MONGO_HOST=mongodb_service
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=objectservice
+      - SERVICE_PORT=8002
+  
+  api-service3:
+    container_name: api_service3
+    build:
+      context: ../
+      dockerfile: deployments/challenge_service/Dockerfile
+    expose:
+      - 8003
+    networks:
+      - challenge-network
+    environment:
+      #- GIN_MODE=release
+      - REDIS_HOST=redis_service
+      - REDIS_PORT=6379
+      - MONGO_HOST=mongodb_service
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=objectservice
+      - SERVICE_PORT=8003
+  
+  api-service4:
+    container_name: api_service4
+    build:
+      context: ../
+      dockerfile: deployments/challenge_service/Dockerfile
+    expose:
+      - 8004
+    networks:
+      - challenge-network
+    environment:
+      #- GIN_MODE=release
+      - REDIS_HOST=redis_service
+      - REDIS_PORT=6379
+      - MONGO_HOST=mongodb_service
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=objectservice
+      - SERVICE_PORT=8004
+  
+
+    
+
+
+networks:
+  challenge-network:
+    external: false
