@@ -20,8 +20,13 @@ import (
 func main() {
 	var conf config.Config
 	config.ReadYAML("./config.yaml", &conf)
+	err := config.ReadEnv(&conf)
+	fmt.Println(err)
+
 	file, _ := os.OpenFile("./logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	logger := zap.New(file, zapcore.ErrorLevel)
+
+	fmt.Println(conf)
 	context := context.Background()
 
 	// redis repository
@@ -38,6 +43,9 @@ func main() {
 	mdService := middleware.New(conf.Middleware, redisRepo, logger)
 	upService := upload.New(logger, mongodbRepo, redisRepo)
 	serv := gin.New(logger, conf.Middleware, mdService, upService)
-	serv.Start(":8080")
+
+	listenPort := fmt.Sprintf(":%s",conf.Service.Port)
+	fmt.Println(listenPort)
+	serv.Start(listenPort)
 
 }
