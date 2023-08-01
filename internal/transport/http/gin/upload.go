@@ -39,5 +39,5 @@ func (u uploadHandler) Delete(c *gin.Context) {
 		Message: "failed to delete object"})
 		return
 	}
-	c.JSON(200, response.PutObject{Message: "object has been deleted"})
+	c.JSON(200, response.PutObject{Message: "object has been deleted",ObjectId: objectId})
 }
