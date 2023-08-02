@@ -8,5 +8,6 @@ import (
 
 type Mongodb interface {
 	InsertObject(object.ObjectModel) (primitive.ObjectID, error)
+	IsChecksumExists(object.ObjectModel) (bool,error)
 	DeleteObjectByObjectIdUser(string, uuid.UUID) (bool, error)
 }

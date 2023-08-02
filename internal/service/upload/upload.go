@@ -37,7 +37,13 @@ func (u upload) CreateObject(req request.PutObject) (string, error) {
 		Size:     req.File.Size,
 		Owner:    req.Username,
 	}
-
+	dataExists,err := u.mongodb.IsChecksumExists(object)
+	if dataExists {
+		u.logger.Info("object","object is duplicate")
+	}
+	if err != nil {
+		u.logger.Error("error",err)
+	}
 	_, err = u.mongodb.InsertObject(object)
 
 	if err != nil {

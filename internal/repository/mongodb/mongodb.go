@@ -20,8 +20,6 @@ func New(conn *mongo.Database, logger logger.Logger, ctx context.Context) reposi
 	conn.Collection(objectsName).Indexes().CreateMany(
 		context.Background(),
 		[]mongo.IndexModel{
-			{Keys: bson.D{{Key: "checksum", Value: 1}},
-				Options: options.Index().SetUnique(true)},
 			{Keys: bson.D{{Key: "uuid", Value: 1}},
 				Options: options.Index().SetUnique(true)},
 		},
