@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "f0420329-6b6d-4db8-bde7-b7e9b86d0645",
+		"name": "object_storage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10835333"
+	},
+	"item": [
+		{
+			"name": "objects",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "username",
+								"value": "kia",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "objectId",
+									"value": "bf12df60-341c-4164-904a-b79534689931",
+									"type": "default"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/kia/Downloads/Golang_Challeng.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/object/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"object",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "data",
+											"value": "{\"username\":\"kia\",\"id\":\"bf12df60-341c-4164-904a-b79536899304\"}",
+											"type": "default"
+										},
+										{
+											"key": "username",
+											"value": "kia",
+											"type": "default",
+											"disabled": true
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/object/put",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"put"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 31 Jul 2023 06:59:48 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "59"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"objectId\": \"64c75be43bc861292d3a01f7\"\n}"
+						},
+						{
+							"name": "duplicate object",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "data",
+											"value": "{\"username\":\"kia\",\"id\":\"bf12df60-341c-4164-904a-b79536899304\"}",
+											"type": "default"
+										},
+										{
+											"key": "username",
+											"value": "kia",
+											"type": "default",
+											"disabled": true
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/object/put",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"put"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 31 Jul 2023 07:01:34 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"duplicate object\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "username",
+								"value": "kia",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/object/delete/bf12df60-341c-4164-904a-b79534689931",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"object",
+								"delete",
+								"bf12df60-341c-4164-904a-b79534689931"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
