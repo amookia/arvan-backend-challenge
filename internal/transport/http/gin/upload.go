@@ -24,7 +24,7 @@ func (u uploadHandler) Create(c *gin.Context) {
 	}
 	objectId, err := u.upload.CreateObject(form)
 	if err != nil {
-		c.AbortWithStatusJSON(400, response.PutObjectError{Err: err.Error()})
+		c.AbortWithStatusJSON(400, ErrorHandler("duplication error",err))
 		return
 	}
 	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId})
