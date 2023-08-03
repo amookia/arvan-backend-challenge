@@ -1,13 +1,13 @@
 {
 	"info": {
 		"_postman_id": "f0420329-6b6d-4db8-bde7-b7e9b86d0645",
-		"name": "object_storage",
+		"name": "Arvan challenge",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "10835333"
 	},
 	"item": [
 		{
-			"name": "objects",
+			"name": "object",
 			"item": [
 				{
 					"name": "create",
@@ -25,13 +25,13 @@
 							"formdata": [
 								{
 									"key": "objectId",
-									"value": "bf12df60-341c-4164-904a-b79534689931",
+									"value": "bf12df60-341c-4164-904a-b79534689936",
 									"type": "default"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/kia/Downloads/Golang_Challeng.pdf"
+									"src": "/home/kia/Desktop/Mastering Go.pdf"
 								}
 							]
 						},
@@ -112,43 +112,42 @@
 							"body": "{\n    \"message\": \"success\",\n    \"objectId\": \"64c75be43bc861292d3a01f7\"\n}"
 						},
 						{
-							"name": "duplicate object",
+							"name": "duplicate uuid",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "username",
+										"value": "kia",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "data",
-											"value": "{\"username\":\"kia\",\"id\":\"bf12df60-341c-4164-904a-b79536899304\"}",
+											"key": "objectId",
+											"value": "bf12df60-341c-4164-904a-b79534689936",
 											"type": "default"
-										},
-										{
-											"key": "username",
-											"value": "kia",
-											"type": "default",
-											"disabled": true
 										},
 										{
 											"key": "file",
 											"type": "file",
-											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
+											"src": "/home/kia/Downloads/Golang_Challeng.pdf"
 										}
 									]
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/v1/object/put",
+									"raw": "http://localhost/api/v1/object/create",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
-									"port": "8080",
 									"path": [
 										"api",
 										"v1",
 										"object",
-										"put"
+										"create"
 									]
 								}
 							},
@@ -157,20 +156,28 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
+									"key": "Server",
+									"value": "nginx/1.25.1"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Aug 2023 08:53:33 GMT"
+								},
+								{
 									"key": "Content-Type",
 									"value": "application/json; charset=utf-8"
 								},
 								{
-									"key": "Date",
-									"value": "Mon, 31 Jul 2023 07:01:34 GMT"
+									"key": "Content-Length",
+									"value": "26"
 								},
 								{
-									"key": "Content-Length",
-									"value": "28"
+									"key": "Connection",
+									"value": "keep-alive"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"error\": \"duplicate object\"\n}"
+							"body": "{\n    \"error\": \"duplicate uuid\"\n}"
 						}
 					]
 				},
@@ -209,7 +216,134 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "object not found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "username",
+										"value": "kia",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/v1/object/delete/bf12df60-341c-4164-904a-b79534689936",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"delete",
+										"bf12df60-341c-4164-904a-b79534689936"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.1"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Aug 2023 08:54:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "72"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"failed to delete object\",\n    \"errors\": [\n        \"object does not exist\"\n    ]\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "username",
+										"value": "kia",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/v1/object/delete/bf12df60-341c-4164-904a-b79534689936",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"delete",
+										"bf12df60-341c-4164-904a-b79534689936"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.1"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Aug 2023 08:54:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"object has been deleted\",\n    \"objectId\": \"bf12df60-341c-4164-904a-b79534689936\"\n}"
+						}
+					]
 				}
 			]
 		}
