@@ -51,68 +51,7 @@
 					},
 					"response": [
 						{
-							"name": "success",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "data",
-											"value": "{\"username\":\"kia\",\"id\":\"bf12df60-341c-4164-904a-b79536899304\"}",
-											"type": "default"
-										},
-										{
-											"key": "username",
-											"value": "kia",
-											"type": "default",
-											"disabled": true
-										},
-										{
-											"key": "file",
-											"type": "file",
-											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
-										}
-									]
-								},
-								"url": {
-									"raw": "http://localhost:8080/api/v1/object/put",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"v1",
-										"object",
-										"put"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 31 Jul 2023 06:59:48 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "59"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"message\": \"success\",\n    \"objectId\": \"64c75be43bc861292d3a01f7\"\n}"
-						},
-						{
-							"name": "duplicate uuid",
+							"name": "Conflict",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -127,13 +66,81 @@
 									"formdata": [
 										{
 											"key": "objectId",
-											"value": "bf12df60-341c-4164-904a-b79534689936",
+											"value": "bf12df60-341c-4164-904a-b79534689938",
 											"type": "default"
 										},
 										{
 											"key": "file",
 											"type": "file",
-											"src": "/home/kia/Downloads/Golang_Challeng.pdf"
+											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/v1/object/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"create"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.1"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Aug 2023 09:21:22 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "59"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"duplication error\",\n    \"errors\": [\n        \"duplicate uuid\"\n    ]\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "kia",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "objectId",
+											"value": "bf12df60-341c-4164-904a-b79534689938",
+											"type": "default"
+										},
+										{
+											"key": "filee",
+											"type": "file",
+											"src": "/home/kia/.cache/.fr-4vaRja/[FVOR95041] Decision_Making_Economics_Project/Notes/FVOR95041_S12_Notes.pdf"
 										}
 									]
 								},
@@ -161,7 +168,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 03 Aug 2023 08:53:33 GMT"
+									"value": "Fri, 04 Aug 2023 09:22:52 GMT"
 								},
 								{
 									"key": "Content-Type",
@@ -169,7 +176,7 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "26"
+									"value": "124"
 								},
 								{
 									"key": "Connection",
@@ -177,7 +184,75 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"error\": \"duplicate uuid\"\n}"
+							"body": "{\n    \"message\": \"invalid form\",\n    \"errors\": [\n        \"Key: 'PutObject.File' Error:Field validation for 'File' failed on the 'required' tag\"\n    ]\n}"
+						},
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "kia",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "objectId",
+											"value": "bf12df60-341c-4164-904a-b79534689936",
+											"type": "default"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/home/kia/Pictures/Screenshots/Screenshot from 2023-07-28 19-56-39.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/v1/object/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.1"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Aug 2023 09:25:32 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"objectId\": \"bf12df60-341c-4164-904a-b79534689936\"\n}"
 						}
 					]
 				},
@@ -218,7 +293,7 @@
 					},
 					"response": [
 						{
-							"name": "object not found",
+							"name": "Not Found",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
@@ -281,7 +356,7 @@
 							"body": "{\n    \"message\": \"failed to delete object\",\n    \"errors\": [\n        \"object does not exist\"\n    ]\n}"
 						},
 						{
-							"name": "success",
+							"name": "OK",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
