@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/amookia/arvan-backend-challenge/internal/config"
-	m "github.com/amookia/arvan-backend-challenge/internal/repository/mongodb"
+	mongo "github.com/amookia/arvan-backend-challenge/internal/repository/mongodb"
 	"github.com/amookia/arvan-backend-challenge/internal/repository/redis"
 	"github.com/amookia/arvan-backend-challenge/internal/service/middleware"
 	"github.com/amookia/arvan-backend-challenge/internal/service/upload"
@@ -18,34 +18,41 @@ import (
 )
 
 func main() {
+	// Logger
+	file, _ := os.OpenFile("./logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	defer file.Close()
+	logger := zap.New(file, zapcore.ErrorLevel)
+	//Config
 	var conf config.Config
 	config.ReadYAML("./config.yaml", &conf)
 	err := config.ReadEnv(&conf)
-	fmt.Println(err)
-
-	file, _ := os.OpenFile("./logs/logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	logger := zap.New(file, zapcore.ErrorLevel)
-
-	fmt.Println(conf)
+	if err != nil {
+		panic(err)
+	}
+	// Context
 	context := context.Background()
-
-	// redis repository
+	// Redis
 	redisRepo, _ := redis.New(conf.Redis, context, logger)
 
-	// mongodb
-	mongo, err := mongodb.ConnectToMongo(
-		fmt.Sprintf("mongodb://%s:%s", conf.Mongo.Host, conf.Mongo.Port), conf.Mongo.Name)
+	// Mongo
+	mongoConn, err := mongodb.ConnectToMongo(
+		fmt.Sprintf("mongodb://%s:%s", conf.Mongo.Host, conf.Mongo.Port),
+		conf.Mongo.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
-	mongodbRepo := m.New(mongo, logger, context)
+	mongodbRepo := mongo.New(mongoConn, logger, context)
 
+	// Services
 	mdService := middleware.New(conf.Middleware, redisRepo, logger)
 	upService := upload.New(logger, mongodbRepo, redisRepo)
 	serv := gin.New(logger, conf.Middleware, mdService, upService)
-
+	// Listen
 	listenPort := fmt.Sprintf(":%s",conf.Service.Port)
-	fmt.Println(listenPort)
-	serv.Start(listenPort)
+	err = serv.Start(listenPort)
+	if err != nil {
+		panic(err)
+	}
+	logger.Info("listen","server start listening at port ",listenPort)
 
 }
