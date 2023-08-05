@@ -3,6 +3,7 @@ package gin
 import (
 	"errors"
 	"io"
+	"net/http"
 
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
@@ -27,10 +28,15 @@ func (u uploadHandler) Create(c *gin.Context) {
 	}
 	objectId, err := u.upload.CreateObject(form)
 	if err != nil {
-		c.AbortWithStatusJSON(409, ErrorHandler("duplication error",err))
+		c.AbortWithStatusJSON(
+			http.StatusConflict,
+			ErrorHandler("duplication error",err))
 		return
 	}
-	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId})
+	c.JSON(
+		http.StatusOK,
+		response.PutObject{Message: "success", ObjectId: objectId},
+	)
 }
 
 func (u uploadHandler) Delete(c *gin.Context) {
@@ -38,11 +44,16 @@ func (u uploadHandler) Delete(c *gin.Context) {
 	username := c.Request.Header.Get("username")
 	err := u.upload.DeleteObject(username, objectId)
 	if err != nil {
-		c.AbortWithStatusJSON(404, response.Error{Errors: []string{err.Error()},
-		Message: "failed to delete object"})
+		c.AbortWithStatusJSON(
+			http.StatusNotFound,
+			response.Error{Errors: []string{err.Error()},Message: "failed to delete object"},
+		)
 		return
 	}
-	c.JSON(200, response.PutObject{Message: "object has been deleted",ObjectId: objectId})
+	c.JSON(
+		http.StatusOK,
+		response.PutObject{Message: "object has been deleted",ObjectId: objectId},
+	)
 }
 
 func (u uploadHandler) Put(c *gin.Context) {
@@ -66,8 +77,14 @@ func (u uploadHandler) Put(c *gin.Context) {
 	}
 	err = u.upload.PutObject(form)
 	if err != nil {
-		c.AbortWithStatusJSON(409, ErrorHandler("duplication error",err))
+		c.AbortWithStatusJSON(
+			http.StatusConflict, 
+			ErrorHandler("duplication error",err),
+		)
 		return
 	}
-	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId})
+	c.JSON(
+		http.StatusOK, 
+		response.PutObject{Message: "success", ObjectId: objectId},
+	)
 }
