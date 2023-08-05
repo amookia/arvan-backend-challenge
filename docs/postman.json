@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "f0420329-6b6d-4db8-bde7-b7e9b86d0645",
 		"name": "Arvan challenge",
+		"description": "Arvancloud golang backend challenge",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "10835333"
 	},
@@ -10,13 +11,13 @@
 			"name": "object",
 			"item": [
 				{
-					"name": "create",
+					"name": "create (form)",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "username",
-								"value": "kia",
+								"value": "{{username}}",
 								"type": "text"
 							}
 						],
@@ -25,21 +26,20 @@
 							"formdata": [
 								{
 									"key": "objectId",
-									"value": "bf12df60-341c-4164-904a-b79534689936",
+									"value": "{{$guid}}",
 									"type": "default"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/kia/Desktop/Mastering Go.pdf"
+									"src": "/home/kia/Downloads/Golang_Challeng.pdf"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost/api/v1/object/create",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/api/v1/object/create",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -257,13 +257,193 @@
 					]
 				},
 				{
+					"name": "put (body)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{username}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/object/put/{{$guid}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"object",
+								"put",
+								"{{$guid}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{username}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/object/put/{{$guid}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"put",
+										"{{$guid}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 05 Aug 2023 19:33:42 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"objectId\": \"03b6a9a4-b708-40fc-bf91-5dd6f46d861d\"\n}"
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{username}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/object/put/03b6a9a4-b708-40fc-bf91-5dd6f46d861d",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"put",
+										"03b6a9a4-b708-40fc-bf91-5dd6f46d861d"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 05 Aug 2023 19:34:06 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "59"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"duplication error\",\n    \"errors\": [\n        \"duplicate uuid\"\n    ]\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{username}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/object/put/{{$guid}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"object",
+										"put",
+										"{{$guid}}"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 05 Aug 2023 19:34:46 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "66"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"invalid header\",\n    \"errors\": [\n        \"username header required\"\n    ]\n}"
+						}
+					]
+				},
+				{
 					"name": "delete",
 					"request": {
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "username",
-								"value": "kia",
+								"value": "{{username}}",
 								"type": "text"
 							}
 						],
@@ -277,10 +457,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost/api/v1/object/delete/bf12df60-341c-4164-904a-b79534689931",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/api/v1/object/delete/bf12df60-341c-4164-904a-b79534689931",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -421,6 +600,20 @@
 					]
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "address",
+			"value": "localhost:8001"
+		},
+		{
+			"key": "username",
+			"value": "kia"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8001"
 		}
 	]
 }
