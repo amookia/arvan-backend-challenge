@@ -93,7 +93,7 @@ services:
     networks:
       - challenge-network
     environment:
-      #- GIN_MODE=release
+      - GIN_MODE=release
       - REDIS_HOST=redis_service
       - REDIS_PORT=6379
       - MONGO_HOST=mongodb_service
