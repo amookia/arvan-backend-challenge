@@ -5,6 +5,7 @@ import (
 )
 
 type Upload interface {
-	CreateObject(request.PutObject) (string, error)
+	CreateObject(request.CreateObject) (string, error)
 	DeleteObject(string, string) error
+	PutObject(request.PutObject) error
 }

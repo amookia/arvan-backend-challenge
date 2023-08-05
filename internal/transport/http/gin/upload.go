@@ -1,6 +1,9 @@
 package gin
 
 import (
+	"errors"
+	"io"
+
 	"github.com/amookia/arvan-backend-challenge/internal/service"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/request"
 	"github.com/amookia/arvan-backend-challenge/internal/transport/http/response"
@@ -15,7 +18,7 @@ type uploadHandler struct {
 }
 
 func (u uploadHandler) Create(c *gin.Context) {
-	var form request.PutObject
+	var form request.CreateObject
 	err := c.ShouldBindWith(&form, binding.FormMultipart)
 	form.Username = c.GetHeader("username")
 	if err != nil {
@@ -40,4 +43,31 @@ func (u uploadHandler) Delete(c *gin.Context) {
 		return
 	}
 	c.JSON(200, response.PutObject{Message: "object has been deleted",ObjectId: objectId})
+}
+
+func (u uploadHandler) Put(c *gin.Context) {
+	requestBody := c.Request.Body
+	if requestBody == nil {
+		c.AbortWithStatusJSON(400,
+		ErrorHandler("invalid input",errors.New("there is not any data input")))
+	}
+	body,err := io.ReadAll(requestBody)
+	if err != nil {
+		c.AbortWithStatusJSON(400,
+		ErrorHandler("invalid inupt",errors.New("there is a problem to read input data")))
+	}
+	defer requestBody.Close()
+	objectId := c.Param("objectId")
+	username := c.Request.Header.Get("username")
+	form := request.PutObject{
+		Body: body,
+		ObjectId: objectId,
+		Username: username,
+	}
+	err = u.upload.PutObject(form)
+	if err != nil {
+		c.AbortWithStatusJSON(409, ErrorHandler("duplication error",err))
+		return
+	}
+	c.JSON(200, response.PutObject{Message: "success", ObjectId: objectId})
 }

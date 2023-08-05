@@ -22,7 +22,7 @@ func New(logger logger.Logger, mongodb repository.Mongodb, redis repository.Redi
 	return upload{logger: logger, redis: redis, mongodb: mongodb}
 }
 
-func (u upload) CreateObject(req request.PutObject) (string, error) {
+func (u upload) CreateObject(req request.CreateObject) (string, error) {
 	id, err := uuid.Parse(req.ObjectId)
 	if err != nil {
 		return "", err
@@ -32,7 +32,7 @@ func (u upload) CreateObject(req request.PutObject) (string, error) {
 		return "", err
 	}
 	object := object.ObjectModel{
-		CheckSum: checksum.GenerateMd5CheckSum(file),
+		CheckSum: checksum.GenerateFileMd5CheckSum(file),
 		Uuid:     id,
 		Size:     req.File.Size,
 		Owner:    req.Username,
@@ -65,5 +65,32 @@ func (u upload) DeleteObject(username string, objectId string) error {
 	if !deleted {
 		return errors.New("object does not exist")
 	}
+	return nil
+}
+
+func (u upload) PutObject(req request.PutObject) error {
+	id, err := uuid.Parse(req.ObjectId)
+	if err != nil {
+		return err
+	}
+	object := object.ObjectModel{
+		CheckSum: checksum.GenerateByteMd5CheckSum(req.Body),
+		Uuid:     id,
+		Size:     int64(len(req.Body)),
+		Owner:    req.Username,
+	}
+	dataExists,err := u.mongodb.IsChecksumExists(object)
+	if dataExists {
+		u.logger.Info("object","object is duplicate")
+	}
+	if err != nil {
+		u.logger.Error("error",err)
+	}
+	_, err = u.mongodb.InsertObject(object)
+
+	if err != nil {
+		return err
+	}
+	u.redis.UserMonthlyUsageUpdate(object.Owner, object.Size)
 	return nil
 }

@@ -1,11 +1,18 @@
 package request
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+)
 
 type (
-	PutObject struct {
+	CreateObject struct {
 		File     *multipart.FileHeader `form:"file" binding:"required"`
 		ObjectId string                `form:"objectId"`
+		Username string
+	}
+	PutObject struct {
+		Body     []byte
+		ObjectId string
 		Username string
 	}
 )

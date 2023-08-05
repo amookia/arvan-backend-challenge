@@ -11,5 +11,7 @@ func (a api) routes(c *gin.RouterGroup) {
 	{
 		object.POST("/create", a.middleware.monthlyQuota, a.upload.Create)
 		object.DELETE("/delete/:objectId", a.middleware.monthlyQuota, a.upload.Delete)
+		object.POST("/put/:objectId", a.middleware.monthlyQuota, a.upload.Put)
+
 	}
 }
