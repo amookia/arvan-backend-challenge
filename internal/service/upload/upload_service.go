@@ -81,7 +81,7 @@ func (u upload) PutObject(req request.PutObject) error {
 	}
 	dataExists,err := u.mongodb.IsChecksumExists(object)
 	if dataExists {
-		u.logger.Info("object","object is duplicate")
+		return errors.New("duplicate object")
 	}
 	if err != nil {
 		u.logger.Error("error",err)
